@@ -1,4 +1,4 @@
-const input = require("fs").readFileSync("data.txt").toString();
+const input = require("fs").readFileSync("data.txt").toString().split("\n");
 
 console.log(`Part 1: ${part1()}`);
 // console.log(`Part 1: ${part1()}`);
@@ -7,24 +7,23 @@ console.log(`Part 1: ${part1()}`);
 
 function part1() {
   let total = 0;
-  for (let game of input.split("\n")) {
-    let valid = true;
-
+  for (let game of input) {
     //Split between Game ID and game data value Game 1: 3 blue
     let [gameId, gameData] = game.split(": ");
+    let gameSet = gameData.split("; ");
+    let valid = true;
 
-    //Split the sets
-    for (let gameSet of gameData.split("; ")) {
+    for (let gameId of gameSet) {
       let cubeCounts = {
         red: 12,
         green: 13,
         blue: 14,
       };
 
-      for (let cube of gameSet.split(", ")) {
+      for (let cube of gameId.split(", ")) {
         //Split by space ex: 3 blue
         let [count, color] = cube.split(" ");
-        cubeCounts[color] -= parseInt(count);
+        cubeCounts[color] -= count;
 
         for (let key of Object.keys(cubeCounts)) {
           if (cubeCounts[key] < 0) {
@@ -38,6 +37,7 @@ function part1() {
       total += parseInt(gameId.split(" ")[1]);
     }
   }
+
   return total;
 }
 
